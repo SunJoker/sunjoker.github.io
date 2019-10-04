@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://sunjoker.github.io/</id>
     <title>PP&apos;s Blog</title>
-    <updated>2019-10-04T08:00:22.863Z</updated>
+    <updated>2019-10-04T09:16:41.526Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://sunjoker.github.io/"/>
     <link rel="self" href="https://sunjoker.github.io//atom.xml"/>
@@ -10,6 +10,38 @@
     <logo>https://sunjoker.github.io//images/avatar.png</logo>
     <icon>https://sunjoker.github.io//favicon.ico</icon>
     <rights>All rights reserved 2019, PP&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[MySQL存储过程]]></title>
+        <id>https://sunjoker.github.io//post/mysql-cun-chu-guo-cheng</id>
+        <link href="https://sunjoker.github.io//post/mysql-cun-chu-guo-cheng">
+        </link>
+        <updated>2019-10-04T09:07:27.000Z</updated>
+        <summary type="html"><![CDATA[<p>一篇关于MySQL存储过程创建的知识点总结</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>一篇关于MySQL存储过程创建的知识点总结</p>
+<!-- more -->
+<blockquote>
+<p>关于MySQL的存储过程😇</p>
+</blockquote>
+<h2 id="创建存储过程">创建存储过程</h2>
+<h3 id="语法">语法：</h3>
+<pre><code>CREATE PROCEDURE 存储过程名 (参数列表)
+BEGIN
+    SQL语句主体
+END
+</code></pre>
+<h3 id="参数列表的注意点">参数列表的注意点：</h3>
+<pre><code>参数列表的参数有三种格式：IN/OUT/INOUT 参数名 参数类型
+- IN-传入参数 
+- OUT-传出参数	
+- INOUT-既可作为传入参数也可以作为传出参数
+</code></pre>
+<h3 id="声明局部变量">声明局部变量：</h3>
+<pre><code>DECLARE 参数名 数据类型 DEFAULT 默认值
+例子：DECLARE m INT DEFAULT 1
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://sunjoker.github.io//post/hello-gridea</id>

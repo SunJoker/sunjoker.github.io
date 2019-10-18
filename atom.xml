@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://sunjoker.github.io/</id>
     <title>PP&apos;s Blog</title>
-    <updated>2019-10-04T09:16:41.526Z</updated>
+    <updated>2019-10-18T16:15:48.288Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://sunjoker.github.io/"/>
     <link rel="self" href="https://sunjoker.github.io//atom.xml"/>
@@ -10,6 +10,78 @@
     <logo>https://sunjoker.github.io//images/avatar.png</logo>
     <icon>https://sunjoker.github.io//favicon.ico</icon>
     <rights>All rights reserved 2019, PP&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[MySQL数据库杂记]]></title>
+        <id>https://sunjoker.github.io//post/mysql-shu-ju-ku-za-ji</id>
+        <link href="https://sunjoker.github.io//post/mysql-shu-ju-ku-za-ji">
+        </link>
+        <updated>2019-10-18T14:54:54.000Z</updated>
+        <summary type="html"><![CDATA[<p>一篇关于MySQL索引和其他琐碎的知识点总结😜</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>一篇关于MySQL索引和其他琐碎的知识点总结😜</p>
+<!-- more -->
+<blockquote>
+<p>各种各样的小知识点(视频看到最后的总结)🙃</p>
+</blockquote>
+<ol>
+<li>复杂筛选</li>
+</ol>
+<blockquote>
+<p>使用SQL添加筛选条件时，如果筛选条件涉及到分组属性(如：COUNT,MAX,MIN,AVG等)，使用having在group by后做筛选，其他情况使用where。</p>
+</blockquote>
+<hr>
+<ol start="2">
+<li>SQL性能分析相关</li>
+</ol>
+<blockquote>
+<p>使用explain进行SQL性能分析时 ，type关键字表示性能，显示查询使用了何种类型：从最好到最差依次是：system&gt;const&gt;eq_ref&gt;ref&gt;range&gt;index&gt;all</p>
+</blockquote>
+<hr>
+<ol start="3">
+<li>如何保证索引的有效性</li>
+</ol>
+<ul>
+<li>全值匹配</li>
+<li>最佳左前缀法则</li>
+<li>不要在索引列上做任何操作(计算、函数等)</li>
+<li>存储引擎不能使用索引中范围条件右边的列</li>
+<li>尽量使用覆盖索引的查询，减少<font color=red>select *</font></li>
+<li>MySQL在使用<font color=red>!=</font>或<font color=red>&lt;&gt;</font>时，无法使用索引导致全表扫描</li>
+<li><font color=red>is null</font>，<font color=red>is not null</font>也无法使用索引</li>
+<li>like以通配符开始('%aa...')MySQL索引也会失效，导致全表扫描</li>
+<li>字符串不加单引号，索引失效</li>
+<li>少用<font color=orange>or</font>，用它来连接时索引会失效</li>
+</ul>
+<hr>
+<ol start="4">
+<li>小表驱动大表优化原则(小的数据集驱动大的数据集)🤞</li>
+</ol>
+<blockquote>
+<pre><code>  select * from A where id in (select id from B)  
+  等价于  
+  for select id from B  
+  for select * from A where A.id = B.id    
+</code></pre>
+</blockquote>
+<ul>
+<li>
+<h3 id="font-colorgreen当b的数据集小于a的数据集时用in优于exists"><font color=green>当B的数据集小于A的数据集时，用in优于exists。</h3>
+</li>
+</ul>
+<blockquote>
+<pre><code>  select * from A where exists (select 1 from B where B.id = A.id)  
+  等价于  
+  for select * from A  
+  for select * from B where B.id = A.id
+</code></pre>
+</blockquote>
+<ul>
+<li>
+<h3 id="当a的数据集小于b的数据集时用exists优于in-font">当A的数据集小于B的数据集时，用exists优于in。</font></h3>
+</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[MySQL存储过程]]></title>
         <id>https://sunjoker.github.io//post/mysql-cun-chu-guo-cheng</id>

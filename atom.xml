@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://sunjoker.github.io/</id>
     <title>PP&apos;s Blog</title>
-    <updated>2019-10-18T16:15:48.288Z</updated>
+    <updated>2019-11-17T13:51:23.850Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://sunjoker.github.io/"/>
     <link rel="self" href="https://sunjoker.github.io//atom.xml"/>
@@ -10,6 +10,148 @@
     <logo>https://sunjoker.github.io//images/avatar.png</logo>
     <icon>https://sunjoker.github.io//favicon.ico</icon>
     <rights>All rights reserved 2019, PP&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[学一学Junit，多用用]]></title>
+        <id>https://sunjoker.github.io//post/xue-yi-xue-junitduo-yong-yong</id>
+        <link href="https://sunjoker.github.io//post/xue-yi-xue-junitduo-yong-yong">
+        </link>
+        <updated>2019-11-16T08:46:22.000Z</updated>
+        <summary type="html"><![CDATA[<p>突然想每周至少有点学的，基础、提升都可以，先来学习JUnit。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>突然想每周至少有点学的，基础、提升都可以，先来学习JUnit。</p>
+<!-- more -->
+<blockquote>
+<p>什么是JUnit？<br>
+JUnit 是一个 Java 编程语言的单元测试框架。JUnit 在测试驱动的开发方面有很重要的发展，是起源于 JUnit 的一个统称为 xUnit 的单元测试框架之一。</p>
+</blockquote>
+<hr>
+<h3 id="junit基本注解">JUnit基本注解</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">注解</th>
+<th style="text-align:left">用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">@BeforeClass</td>
+<td style="text-align:left">在所有测试方法前执行一次</td>
+</tr>
+<tr>
+<td style="text-align:left">@AfterClass</td>
+<td style="text-align:left">在所有测试方法后执行一次</td>
+</tr>
+<tr>
+<td style="text-align:left">@Before</td>
+<td style="text-align:left">在每个测试方法前执行</td>
+</tr>
+<tr>
+<td style="text-align:left">@After</td>
+<td style="text-align:left">在每个测试方法后执行</td>
+</tr>
+<tr>
+<td style="text-align:left">@Test(timeout=10000)</td>
+<td style="text-align:left">测试方法执行超过10000ms超时，测试失败</td>
+</tr>
+<tr>
+<td style="text-align:left">@Test(expected=Exception.Class)</td>
+<td style="text-align:left">测试时期望获得的异常</td>
+</tr>
+<tr>
+<td style="text-align:left">@Ignore(&quot;not ready yet&quot;)</td>
+<td style="text-align:left">执行测试时忽略此方法</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="mockmvc使用">MockMvc使用</h3>
+<ul>
+<li>
+<p>使用MockMvcBuilder创建构建器，构造器有两种实现：</p>
+<ul>
+<li>StandaloneMockMvcBuilder：独立测试</li>
+<li>DefaultMockMvcBuilder集成Web环境测试（此种方式并不会集成真正的web环境，而是通过相应的Mock API进行模拟测试，无须启动服务器）</li>
+</ul>
+</li>
+<li>
+<p>集成 Web环境方式：</p>
+<ul>
+<li>MockMvcBuilders.webAppContextSetup(WebApplicationContext context)：指定WebApplicationContext，将会从该上下文获取相应的控制器并得到相应的MockMvc</li>
+</ul>
+</li>
+<li>
+<pre><code class="language-java">  @RunWith(SpringRunner.class)
+  @SpringBootTest
+  public class UserControllerTest  {
+      @Autowired
+      private WebApplicationContext webApplicationContext;
+      private MockMvc mockMvc;
+      @Before
+      public void setUp() throws Exception {
+          mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+      }
+  } 
+</code></pre>
+</li>
+<li>
+<p>独立测试方式</p>
+<ul>
+<li>MockMvcBuilders.standaloneSetup(Object... controllers)：通过参数指定一组控制器，这样就不需要从上下文获取了</li>
+</ul>
+</li>
+<li>
+<pre><code class="language-java">  @RunWith(SpringRunner.class)
+  @SpringBootTest
+  public class UserControllerTest  {
+      private MockMvc mockMvc;
+      @Before
+      public void setUp() throws Exception {
+          mockMvc = MockMvcBuilders.standaloneSetup(new UserController()).build();
+      } 
+  }
+</code></pre>
+</li>
+<li>
+<p>带参数</p>
+<pre><code class="language-java"> mockMvc.perform(post(&quot;/add&quot;)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(JSON.toJSONString(user)))
+        .andExpect(status().isOk()).andDo(print()).andReturn()
+        .getResponse().getContentAsString();
+</code></pre>
+</li>
+<li>
+<p>不带参数</p>
+<pre><code class="language-java">    mockMvc.perform(get(&quot;/users&quot;).accept(MediaType.APPLICATION_JSON_UTF8))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andExpect(content().string(equalTo(&quot;[]&quot;)));
+</code></pre>
+</li>
+<li>
+<p>方法解析</p>
+<ul>
+<li>perform：执行一个RequestBuilder请求，会自动执行SpringMVC的流程并映射到相应的控制器执行处理；</li>
+<li>get:声明发送一个get请求的方法。MockHttpServletRequestBuilder get(String urlTemplate, Object... urlVariables)：根据uri模板和uri变量值得到一个GET请求方式的。另外提供了其他的请求的方法，如：post、put、delete等。</li>
+<li>andExpect：添加ResultMatcher验证规则，验证控制器执行完成后结果是否正确（对返回的数据进行的判断）；</li>
+<li>andDo：添加ResultHandler结果处理器，比如调试时打印结果到控制台（对返回的数据进行的判断）；</li>
+<li>andReturn：最后返回相应的MvcResult；然后进行自定义验证/进行下一步的异步处理（对返回的数据进行的判断）；</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="断言assert-font-colorred配合font-assertthat">断言：assert <font color="red">配合</font> assertThat</h3>
+<hr>
+<h3 id="参考资料">参考资料</h3>
+<blockquote>
+<p><a href="http://tengj.top/2017/12/28/springboot12/">Spring Boot干货系列：（十二）Spring Boot使用单元测试</a><br>
+<a href="https://juejin.im/post/5b694ff7e51d4519475f7fbc">SpringBoot junit 测试 controller (MockMvc)</a><br>
+<a href="https://www.cnblogs.com/wangcp-2014/p/4967055.html">Junit4中的新断言assertThat的使用方法</a><br>
+<a href="https://www.bilibili.com/video/av61660179">小“破”站视频</a></p>
+</blockquote>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[MySQL数据库杂记]]></title>
         <id>https://sunjoker.github.io//post/mysql-shu-ju-ku-za-ji</id>

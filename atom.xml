@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://sunjoker.github.io/</id>
     <title>PP&apos;s Blog</title>
-    <updated>2019-11-17T13:51:23.850Z</updated>
+    <updated>2019-11-29T14:23:14.704Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://sunjoker.github.io/"/>
     <link rel="self" href="https://sunjoker.github.io//atom.xml"/>
@@ -10,6 +10,87 @@
     <logo>https://sunjoker.github.io//images/avatar.png</logo>
     <icon>https://sunjoker.github.io//favicon.ico</icon>
     <rights>All rights reserved 2019, PP&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[Java8中Stream的常用操作]]></title>
+        <id>https://sunjoker.github.io//post/java8-zhong-stream-de-chang-yong-cao-zuo</id>
+        <link href="https://sunjoker.github.io//post/java8-zhong-stream-de-chang-yong-cao-zuo">
+        </link>
+        <updated>2019-11-29T14:14:27.000Z</updated>
+        <summary type="html"><![CDATA[<p>Stream翻译为“流”，是Java8中很常用与便捷的一个类，该篇是对Stream的一些常用方法的总结！</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>Stream翻译为“流”，是Java8中很常用与便捷的一个类，该篇是对Stream的一些常用方法的总结！</p>
+<!-- more -->
+<blockquote>
+<p>许多对于array、list的操作需要注意数组越界以及边界性的问题</p>
+</blockquote>
+<h1 id="java-stream">Java Stream</h1>
+<h2 id="1-flatmap-map">1. flatMap &amp;&amp; map</h2>
+<ul>
+<li>map：将List变为流，对每一个元素操作</li>
+<li>flatMap：将包含list的list变为流，操作每一个list，再通过map操作每一元素</li>
+</ul>
+<h3 id="例子1获取所有学生的年龄">例子1（获取所有学生的年龄）</h3>
+<pre><code class="language-json">[
+    {
+        &quot;name&quot;: &quot;小A&quot;,
+        &quot;age&quot;: 12
+    },
+    {
+        &quot;name&quot;: &quot;小B&quot;,
+        &quot;age&quot;: 13
+    }
+]
+</code></pre>
+<pre><code>//伪代码
+List&lt;Integer&gt; ages = students.stream().map(Student::getAge).collect(Collectors.toList());
+</code></pre>
+<h3 id="例子2-获取所有班级的所有学生的年龄">例子2 （获取所有班级的所有学生的年龄）</h3>
+<pre><code class="language-json">[
+    [
+        {
+            &quot;name&quot;: &quot;小A&quot;,
+            &quot;age&quot;: 12
+        },
+        {
+            &quot;name&quot;: &quot;小B&quot;,
+            &quot;age&quot;: 13
+        }
+    ],
+    [
+        {
+            &quot;name&quot;: &quot;小C&quot;,
+            &quot;age&quot;: 11
+        },
+        {
+            &quot;name&quot;: &quot;小D&quot;,
+            &quot;age&quot;: 13
+        }
+    ]
+]
+</code></pre>
+<pre><code>//伪代码
+List&lt;Integer&gt; ages = grades.stream().flatMap(grade -&gt; grade.getStudents.stream()).map(Student::getAge)).collect(Collectors.toList());
+</code></pre>
+<hr>
+<h2 id="peek">peek</h2>
+<ul>
+<li>peek 操作 一般用于不想改变流中元素本身的类型或者只想操作元素的内部状态时</li>
+<li>map 则用于改变流中元素本身类型，即从元素中派生出另一种类型的操作</li>
+</ul>
+<hr>
+<h2 id="skip-limit">skip &amp;&amp; limit</h2>
+<ul>
+<li>它们都是对流进行裁剪的中间方法</li>
+<li>skip 操作必须时刻监测流中元素的状态，才能判断是否需要丢弃，所以 skip 属于状态操作</li>
+<li>limit 只关心截取的是不是其参数 maxsize （最大区间值），其它毫不关心，一旦达到就立马中断操作返回流，所以 limit 属于一个中断操作</li>
+</ul>
+<hr>
+<h2 id="reduce">reduce</h2>
+<ul>
+<li>通过入参的Function将list归约成一个值（计算和、差一类的运算）</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[学一学Junit，多用用]]></title>
         <id>https://sunjoker.github.io//post/xue-yi-xue-junitduo-yong-yong</id>

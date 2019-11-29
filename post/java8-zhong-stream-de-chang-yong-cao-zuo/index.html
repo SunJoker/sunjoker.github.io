@@ -9,7 +9,7 @@
 <meta name="description" content="Blog">
 <meta http-equiv="Access-Control-Allow-Origin" content="*">
 
-<title>学一学Junit，多用用 | PP&#39;s Blog</title>
+<title>Java8中Stream的常用操作 | PP&#39;s Blog</title>
 <link href="https://sunjoker.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
 <link rel="stylesheet" href="//cdn.bootcss.com/KaTeX/0.10.2/katex.min.css"/>
 <script src="//cdn.bootcss.com/KaTeX/0.10.2/katex.min.js"></script>
@@ -249,7 +249,7 @@ var r = 0;
 
 <div class="post">
   <div class="post_title sm_margin">
-    <h2><a>学一学Junit，多用用</a>
+    <h2><a>Java8中Stream的常用操作</a>
 
 
 
@@ -296,7 +296,7 @@ function change(){
 
   <div class="post_details">
     <div class="info"><i class="fa fa-clock-o"></i>
-<span class="date_info">2019-11-16</span>
+<span class="date_info">2019-11-29</span>
 <i class="fa fa-eye"></i>
 
 <span class="date_info"><span id="busuanzi_value_page_pv"></span> Views</span>
@@ -304,18 +304,20 @@ function change(){
 <i class="fa fa-bookmark-o"></i>
 <span class="tags_info weaklink">
 	
-	<a href="https://sunjoker.github.io//tag/zQsCxwZ-J" class="tag">他时若遂凌云志，敢笑黄巢不丈夫</a>
+	<a href="https://sunjoker.github.io//tag/JPtfAByog" class="tag">Java</a>
+
+	<a href="https://sunjoker.github.io//tag/LB0PCe13JT" class="tag">Stream</a>
 
 
 </span>
-<span>3 min read</span>
+<span>2 min read</span>
 &nbsp
 &nbsp
 <i class="fa fa-share"></i>
-<a title="QR code" target="_blank" href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://sunjoker.github.io//post/xue-yi-xue-junitduo-yong-yong"><i class="fa fa-qrcode"></i></a>
-<a title="qq share" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://sunjoker.github.io//post/xue-yi-xue-junitduo-yong-yong&sharesource=qzone&title=学一学Junit，多用用&pics=https://blog.blinkstar.cn/images/avatar.png&summary=&lt;p&gt;突然想每周至少有点学的，基础、提升都可以，先来学习JUnit。&lt;/p&gt;
+<a title="QR code" target="_blank" href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://sunjoker.github.io//post/java8-zhong-stream-de-chang-yong-cao-zuo"><i class="fa fa-qrcode"></i></a>
+<a title="qq share" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://sunjoker.github.io//post/java8-zhong-stream-de-chang-yong-cao-zuo&sharesource=qzone&title=Java8中Stream的常用操作&pics=https://blog.blinkstar.cn/images/avatar.png&summary=&lt;p&gt;Stream翻译为“流”，是Java8中很常用与便捷的一个类，该篇是对Stream的一些常用方法的总结！&lt;/p&gt;
 "><i class="fa fa-qq"></i></a>
-<a title="weibo share" target="_blank" href="https://service.weibo.com/share/share.php?url=https://sunjoker.github.io//post/xue-yi-xue-junitduo-yong-yong&sharesource=weibo&title=学一学Junit，多用用 + " - " + &lt;p&gt;突然想每周至少有点学的，基础、提升都可以，先来学习JUnit。&lt;/p&gt;
+<a title="weibo share" target="_blank" href="https://service.weibo.com/share/share.php?url=https://sunjoker.github.io//post/java8-zhong-stream-de-chang-yong-cao-zuo&sharesource=weibo&title=Java8中Stream的常用操作 + " - " + &lt;p&gt;Stream翻译为“流”，是Java8中很常用与便捷的一个类，该篇是对Stream的一些常用方法的总结！&lt;/p&gt;
 &pic="https://blog.blinkstar.cn/images/avatar.png"><i class="fa fa-weibo"></i></a>
 &nbsp
 &nbsp
@@ -330,144 +332,83 @@ function change(){
   &nbsp
   <img id="mememe" src="//source.unsplash.com/800x400/?arts,weather">
     <div name="show" id="show">
-	<p class="md_block"><span class="md_line md_line_start md_line_end"><p>突然想每周至少有点学的，基础、提升都可以，先来学习JUnit。</p>
+	<p class="md_block"><span class="md_line md_line_start md_line_end"><p>Stream翻译为“流”，是Java8中很常用与便捷的一个类，该篇是对Stream的一些常用方法的总结！</p>
 <!-- more -->
 <blockquote>
-<p>什么是JUnit？<br>
-JUnit 是一个 Java 编程语言的单元测试框架。JUnit 在测试驱动的开发方面有很重要的发展，是起源于 JUnit 的一个统称为 xUnit 的单元测试框架之一。</p>
+<p>许多对于array、list的操作需要注意数组越界以及边界性的问题</p>
 </blockquote>
+<h1 id="java-stream">Java Stream</h1>
+<h2 id="1-flatmap-map">1. flatMap &amp;&amp; map</h2>
+<ul>
+<li>map：将List变为流，对每一个元素操作</li>
+<li>flatMap：将包含list的list变为流，操作每一个list，再通过map操作每一元素</li>
+</ul>
+<h3 id="例子1获取所有学生的年龄">例子1（获取所有学生的年龄）</h3>
+<pre><code class="language-json">[
+    {
+        &quot;name&quot;: &quot;小A&quot;,
+        &quot;age&quot;: 12
+    },
+    {
+        &quot;name&quot;: &quot;小B&quot;,
+        &quot;age&quot;: 13
+    }
+]
+</code></pre>
+<pre><code>//伪代码
+List&lt;Integer&gt; ages = students.stream().map(Student::getAge).collect(Collectors.toList());
+</code></pre>
+<h3 id="例子2-获取所有班级的所有学生的年龄">例子2 （获取所有班级的所有学生的年龄）</h3>
+<pre><code class="language-json">[
+    [
+        {
+            &quot;name&quot;: &quot;小A&quot;,
+            &quot;age&quot;: 12
+        },
+        {
+            &quot;name&quot;: &quot;小B&quot;,
+            &quot;age&quot;: 13
+        }
+    ],
+    [
+        {
+            &quot;name&quot;: &quot;小C&quot;,
+            &quot;age&quot;: 11
+        },
+        {
+            &quot;name&quot;: &quot;小D&quot;,
+            &quot;age&quot;: 13
+        }
+    ]
+]
+</code></pre>
+<pre><code>//伪代码
+List&lt;Integer&gt; ages = grades.stream().flatMap(grade -&gt; grade.getStudents.stream()).map(Student::getAge)).collect(Collectors.toList());
+</code></pre>
 <hr>
-<h3 id="junit基本注解">JUnit基本注解</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">注解</th>
-<th style="text-align:left">用法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">@BeforeClass</td>
-<td style="text-align:left">在所有测试方法前执行一次</td>
-</tr>
-<tr>
-<td style="text-align:left">@AfterClass</td>
-<td style="text-align:left">在所有测试方法后执行一次</td>
-</tr>
-<tr>
-<td style="text-align:left">@Before</td>
-<td style="text-align:left">在每个测试方法前执行</td>
-</tr>
-<tr>
-<td style="text-align:left">@After</td>
-<td style="text-align:left">在每个测试方法后执行</td>
-</tr>
-<tr>
-<td style="text-align:left">@Test(timeout=10000)</td>
-<td style="text-align:left">测试方法执行超过10000ms超时，测试失败</td>
-</tr>
-<tr>
-<td style="text-align:left">@Test(expected=Exception.Class)</td>
-<td style="text-align:left">测试时期望获得的异常</td>
-</tr>
-<tr>
-<td style="text-align:left">@Ignore(&quot;not ready yet&quot;)</td>
-<td style="text-align:left">执行测试时忽略此方法</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h3 id="mockmvc使用">MockMvc使用</h3>
+<h2 id="peek">peek</h2>
 <ul>
-<li>
-<p>使用MockMvcBuilder创建构建器，构造器有两种实现：</p>
-<ul>
-<li>StandaloneMockMvcBuilder：独立测试</li>
-<li>DefaultMockMvcBuilder集成Web环境测试（此种方式并不会集成真正的web环境，而是通过相应的Mock API进行模拟测试，无须启动服务器）</li>
-</ul>
-</li>
-<li>
-<p>集成 Web环境方式：</p>
-<ul>
-<li>MockMvcBuilders.webAppContextSetup(WebApplicationContext context)：指定WebApplicationContext，将会从该上下文获取相应的控制器并得到相应的MockMvc</li>
-</ul>
-</li>
-<li>
-<pre><code class="language-java">  @RunWith(SpringRunner.class)
-  @SpringBootTest
-  public class UserControllerTest  {
-      @Autowired
-      private WebApplicationContext webApplicationContext;
-      private MockMvc mockMvc;
-      @Before
-      public void setUp() throws Exception {
-          mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-      }
-  } 
-</code></pre>
-</li>
-<li>
-<p>独立测试方式</p>
-<ul>
-<li>MockMvcBuilders.standaloneSetup(Object... controllers)：通过参数指定一组控制器，这样就不需要从上下文获取了</li>
-</ul>
-</li>
-<li>
-<pre><code class="language-java">  @RunWith(SpringRunner.class)
-  @SpringBootTest
-  public class UserControllerTest  {
-      private MockMvc mockMvc;
-      @Before
-      public void setUp() throws Exception {
-          mockMvc = MockMvcBuilders.standaloneSetup(new UserController()).build();
-      } 
-  }
-</code></pre>
-</li>
-<li>
-<p>带参数</p>
-<pre><code class="language-java"> mockMvc.perform(post(&quot;/add&quot;)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(JSON.toJSONString(user)))
-        .andExpect(status().isOk()).andDo(print()).andReturn()
-        .getResponse().getContentAsString();
-</code></pre>
-</li>
-<li>
-<p>不带参数</p>
-<pre><code class="language-java">    mockMvc.perform(get(&quot;/users&quot;).accept(MediaType.APPLICATION_JSON_UTF8))
-        .andExpect(status().isOk())
-        .andDo(print())
-        .andExpect(content().string(equalTo(&quot;[]&quot;)));
-</code></pre>
-</li>
-<li>
-<p>方法解析</p>
-<ul>
-<li>perform：执行一个RequestBuilder请求，会自动执行SpringMVC的流程并映射到相应的控制器执行处理；</li>
-<li>get:声明发送一个get请求的方法。MockHttpServletRequestBuilder get(String urlTemplate, Object... urlVariables)：根据uri模板和uri变量值得到一个GET请求方式的。另外提供了其他的请求的方法，如：post、put、delete等。</li>
-<li>andExpect：添加ResultMatcher验证规则，验证控制器执行完成后结果是否正确（对返回的数据进行的判断）；</li>
-<li>andDo：添加ResultHandler结果处理器，比如调试时打印结果到控制台（对返回的数据进行的判断）；</li>
-<li>andReturn：最后返回相应的MvcResult；然后进行自定义验证/进行下一步的异步处理（对返回的数据进行的判断）；</li>
-</ul>
-</li>
+<li>peek 操作 一般用于不想改变流中元素本身的类型或者只想操作元素的内部状态时</li>
+<li>map 则用于改变流中元素本身类型，即从元素中派生出另一种类型的操作</li>
 </ul>
 <hr>
-<h3 id="断言assert-font-colorred配合font-assertthat">断言：assert <font color="red">配合</font> assertThat</h3>
+<h2 id="skip-limit">skip &amp;&amp; limit</h2>
+<ul>
+<li>它们都是对流进行裁剪的中间方法</li>
+<li>skip 操作必须时刻监测流中元素的状态，才能判断是否需要丢弃，所以 skip 属于状态操作</li>
+<li>limit 只关心截取的是不是其参数 maxsize （最大区间值），其它毫不关心，一旦达到就立马中断操作返回流，所以 limit 属于一个中断操作</li>
+</ul>
 <hr>
-<h3 id="参考资料">参考资料</h3>
-<blockquote>
-<p><a href="http://tengj.top/2017/12/28/springboot12/">Spring Boot干货系列：（十二）Spring Boot使用单元测试</a><br>
-<a href="https://juejin.im/post/5b694ff7e51d4519475f7fbc">SpringBoot junit 测试 controller (MockMvc)</a><br>
-<a href="https://www.cnblogs.com/wangcp-2014/p/4967055.html">Junit4中的新断言assertThat的使用方法</a><br>
-<a href="https://www.bilibili.com/video/av61660179">小“破”站视频</a></p>
-</blockquote>
+<h2 id="reduce">reduce</h2>
+<ul>
+<li>通过入参的Function将list归约成一个值（计算和、差一类的运算）</li>
+</ul>
 </span></p></div>
 	<br>
 	<hr>
 <div style="color: #ccc;font-size:14px;"><i class="fa fa-user"></i>本文由<a rel="license" href="/">PP&#39;s Blog</a>创作</div>	
 <div style="color: #ccc;font-size:14px;"><i class="fa fa-cc"></i>该文章采用<a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可。转载请注明出处！</div>
-<div style="color: #ccc;font-size:14px;"><i class="fa fa-clock-o"></i>发布时间为：2019-11-16</div>    
+<div style="color: #ccc;font-size:14px;"><i class="fa fa-clock-o"></i>发布时间为：2019-11-29</div>    
 	 <p class="md_block">
     <div class="reward"><div class="reward-button">赏 <span class="reward-code"> <span class="alipay-code"> <img class="alipay-img" src="https://sunjoker.github.io//media/images/alipay.png"><b>支付宝扫码打赏</b> </span> <span class="wechat-code"> <img class="wechat-img" src="https://sunjoker.github.io//media/images/wechat.png"><b>微信打赏</b> </span> </span></div></div>
 <div style="text-align:center;color: #ccc;font-size:14px;">如果觉得这篇文章对您有帮助，可以请作者喝一杯饮料哦🥤</div>    
@@ -503,23 +444,14 @@ $("img").each( (i,o) => {
 
           <div style="float:right;text-align:right;color:#ccc;font-size:18px;width:50%;">
             下一篇
-            <a href="https://sunjoker.github.io//post/mysql-shu-ju-ku-za-ji">
+            <a href="https://sunjoker.github.io//post/xue-yi-xue-junitduo-yong-yong">
               <h3 class="post-title">
-                MySQL数据库杂记
+                学一学Junit，多用用
               </h3>
             </a>
           </div>
 
 
-
-          <div style="float:left;text-align:left;color:#ccc;font-size:18px;width:50%;">
-            上一篇
-            <a href="https://sunjoker.github.io//post/java8-zhong-stream-de-chang-yong-cao-zuo">
-              <h3 class="post-title">
-                Java8中Stream的常用操作
-              </h3>
-            </a>
-          </div>
 
 </div>
 
@@ -534,16 +466,17 @@ $("img").each( (i,o) => {
       </div>
 <div class="toc-container">
 <ul class="markdownIt-TOC">
-<li>
+<li><a href="#java-stream">Java Stream</a>
 <ul>
-<li>
+<li><a href="#1-flatmap-map">1. flatMap &amp;&amp; map</a>
 <ul>
-<li><a href="#junit%E5%9F%BA%E6%9C%AC%E6%B3%A8%E8%A7%A3">JUnit基本注解</a></li>
-<li><a href="#mockmvc%E4%BD%BF%E7%94%A8">MockMvc使用</a></li>
-<li><a href="#%E6%96%AD%E8%A8%80assert-font-colorred%E9%85%8D%E5%90%88font-assertthat">断言：assert <font color="red">配合</font> assertThat</a></li>
-<li><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li>
+<li><a href="#%E4%BE%8B%E5%AD%901%E8%8E%B7%E5%8F%96%E6%89%80%E6%9C%89%E5%AD%A6%E7%94%9F%E7%9A%84%E5%B9%B4%E9%BE%84">例子1（获取所有学生的年龄）</a></li>
+<li><a href="#%E4%BE%8B%E5%AD%902-%E8%8E%B7%E5%8F%96%E6%89%80%E6%9C%89%E7%8F%AD%E7%BA%A7%E7%9A%84%E6%89%80%E6%9C%89%E5%AD%A6%E7%94%9F%E7%9A%84%E5%B9%B4%E9%BE%84">例子2 （获取所有班级的所有学生的年龄）</a></li>
 </ul>
 </li>
+<li><a href="#peek">peek</a></li>
+<li><a href="#skip-limit">skip &amp;&amp; limit</a></li>
+<li><a href="#reduce">reduce</a></li>
 </ul>
 </li>
 </ul>
